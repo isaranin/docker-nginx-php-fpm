@@ -6,7 +6,7 @@ ENV NGINX_VERSION 1.13.1-1~jessie
 ENV NJS_VERSION   1.13.1.0.1.10-1~jessie
 
 RUN apt-get update \
-	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 \
+	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg2 \
 	&& \
 	NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
 	found=''; \
@@ -20,7 +20,7 @@ RUN apt-get update \
 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
 	done; \
 	test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
-	apt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* \
+	apt-get remove --purge -y gnupg2 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/* \
 	&& echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
@@ -35,10 +35,17 @@ RUN apt-get update \
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
+	&& ln -sf /dev/stderr /var/log/nginx/error.log \
+	&& ln -sf /dev/stderr /var/log/php-fpm.log
 
-	
+
+# Copy etc
 COPY etc /etc/
+
+# Copy main script
+COPY run.sh /run.sh
+RUN chmod u+rwx /run.sh
+
 EXPOSE 80
 
-CMD ["supervisord", "--nodaemon", "--loglevel=info"]
+CMD ["/bin/bash", "/run.sh"]
