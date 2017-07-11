@@ -1,6 +1,7 @@
 FROM php:7.1-fpm
 
-MAINTAINER Ivan Saranin "ivan@saranin.com"
+LABEL author = "Ivan Saranin" \
+	  email =  "ivan@saranin.com"
 
 ENV NGINX_VERSION 1.13.1-1~jessie
 ENV NJS_VERSION   1.13.1.0.1.10-1~jessie
@@ -47,5 +48,5 @@ COPY run.sh /run.sh
 RUN chmod u+rwx /run.sh
 
 EXPOSE 80
-
+VOLUME ["/www", "/etc/nginx/", "/etc/php-fpm"]
 CMD ["/bin/bash", "/run.sh"]
