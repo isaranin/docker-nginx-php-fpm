@@ -3,10 +3,9 @@ version: "3"
 services:
   nginx-php:
     build: ../.
-    container_name: nginx-php
+    container_name: nginx-php-test
     ports:
       - "80:80"
     volumes:
       - "./html:/www"
-      - "./nginx:/etc/nginx/conf.d/"
-#      - "./volumes/certs:/etc/nginx/certs:ro"
+      - "./logs:/log"
