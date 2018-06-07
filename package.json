@@ -1,11 +1,11 @@
 {
   "name": "docker-nginx-php-fpm",
+  "docker-name": "saranin/nginx-php-fpm",
   "version": "1.5.0",
   "description": "Dockerized container with latest nginx and php",
   "author": "Ivan Saranin",
   "repository": "https://github.com/isaranin/docker-nginx-php-fpm",
   "repository-docker": "",
-  "docker-name": "saranin/nginx-php-fpm",
   "devDependencies": {
     "fancy-log": "^1.3.2",
     "gulp": "^3.9.1",
