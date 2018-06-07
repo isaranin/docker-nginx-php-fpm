@@ -2,7 +2,9 @@ version: "3"
 
 services:
   nginx-php:
-    build: ../.
+    build:
+        context: ../.
+        dockerfile: dockers/php7.2
     container_name: nginx-php-test
     ports:
       - "80:80"
