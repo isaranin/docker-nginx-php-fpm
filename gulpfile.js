@@ -1,11 +1,13 @@
 var gulp			= require('gulp');
 
 var git				= require('gulp-git');
+var bump			= require('gulp-bump');
 var tagVersion		= require('gulp-tag-version');
 var fs				= require('fs');
 var argv			= require('yargs').argv;
 var log				= require('fancy-log');
 var childProcess	= require('child_process');
+var runSequence		= require('run-sequence');
 
 // task for bumping version and commit new version
 
@@ -61,4 +63,6 @@ gulp.task('docker-push', function() {
 
 });
 
-gulp.task('deploy', ['new-version', 'docker-push']);
+gulp.task('deploy', function() {
+	runSequence('new-version','docker-push');
+});
